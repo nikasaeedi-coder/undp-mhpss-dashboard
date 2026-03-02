@@ -1175,7 +1175,7 @@
     <button class="tab active" role="tab" aria-selected="true" onclick="switchTab('dashboard')" data-tip="Global stats, ROI, performance metrics &amp; timeline">Evidence &amp; ROI</button>
     <button class="tab" role="tab" aria-selected="false" onclick="switchTab('proposal')" style="background:rgba(243,156,18,0.3);color:#fff" data-tip="IRRF &amp; SP 2026-2029 indicator alignment for proposals">Proposal Builder</button>
     <button class="tab" role="tab" aria-selected="false" onclick="switchTab('showcase')" data-tip="Country programme results, case studies &amp; outcomes">MHPSS in Action</button>
-    <!-- Contacts tab removed from public version -->
+    <button class="tab" role="tab" aria-selected="false" onclick="switchTab('contacts')" data-tip="Country interventions &amp; partners by region">Country Programmes</button>
     <button class="tab" role="tab" aria-selected="false" onclick="switchTab('brain')" data-tip="Brain Economy agenda: UNDP positioning &amp; engagement">Brain Economy</button>
     <button class="tab" role="tab" aria-selected="false" onclick="switchTab('trainings')" data-tip="Training programmes, workshops &amp; capacity-building">Trainings</button>
     <button class="tab" role="tab" aria-selected="false" onclick="switchTab('stories')" data-tip="Impact stories, media coverage &amp; visibility">Stories &amp; Media</button>
@@ -1995,30 +1995,8 @@
     </div>
   </div>
 
-  <!-- Contacts section removed from public version -->
-  <div id="contacts" class="section" style="display:none!important">
-
-    <div class="filters">
-      <label>Filter by Country:</label>
-      <select id="countryFilter" onchange="filterContacts()">
-        <option value="all">All Countries</option>
-      </select>
-      <label>Search:</label>
-      <input type="text" id="contactSearch" placeholder="Name, role, or keyword..." oninput="filterContacts()">
-      <span id="contactCount" class="count-badge">0 contacts</span>
-      <button class="clear-btn" onclick="clearContactFilters()">✕ Clear</button>
-    </div>
-
-    <div class="card">
-      <h3>MHPSS Global Contact Network</h3>
-      <div class="table-wrap">
-        <table id="contactTable">
-          <thead><tr><th>Country</th><th>Role / Title</th><th>Name</th><th>Notes</th></tr></thead>
-          <tbody id="contactBody"></tbody>
-        </table>
-      </div>
-      <button class="copy-btn" onclick="copyContacts(this)">Copy Filtered Contacts</button>
-    </div>
+  <!-- ===== TAB: COUNTRY PROGRAMMES ===== -->
+  <div id="contacts" class="section">
 
     <div class="card">
       <h3>🌍 Global MHPSS Footprint — Where UNDP Works</h3>
@@ -2761,67 +2739,6 @@ document.addEventListener('DOMContentLoaded', function() {
   if (window.location.hash) handleHash();
 })();
 
-// ===== CONTACTS DATA =====
-const contacts = [
-  {country:"Montenegro",title:"Minister of Health",name:"Dr Vojislav Simun",notes:"Approached by Ministry to support reestablishing mental health support line."},
-  {country:"Montenegro",title:"State Secretary, Ministry of Health",name:"Mirjana Vlahovic Andrijasevic",notes:"Human rights activist, gender equality champion. Worked with IOM and Ministry of Justice."},
-  {country:"Montenegro",title:"Director, Daycare Hospital - Clinic for Psychiatry; Mental Health Festival Organiser",name:"Dr Tea Dakic",notes:"Human rights and mental health champion. Organises annual Mental Health Festival aligned with UNDP MHPSS principles."},
-  {country:"Montenegro",title:"Mental Health Festival",name:"(Institutional)",notes:"Topics cover peace, solidarity, education, equality, community well-being, freedom, inclusion, tolerance, justice."},
-  {country:"Montenegro",title:"Anima - Center for Women and Peace Studies",name:"(NGO)",notes:"Women's peace and development organization."},
-  {country:"Montenegro",title:"NGO Portret",name:"(NGO)",notes:"Civil society organisation."},
-  {country:"Montenegro",title:"NGO CAUZ",name:"(NGO)",notes:"Civil society organisation."},
-  {country:"Montenegro",title:"NGO CAZAS",name:"(NGO)",notes:"Civil society organisation."},
-  {country:"Yemen",title:"MHPSS Consultant",name:"Sami Mohammed Abdo Al-Sharabi",notes:"Former Executive Director of Al-Amal Psychiatric Hospital. Supervised 12+ clinical psychology research projects."},
-  {country:"Yemen",title:"Psychologist",name:"Alanood Hamood Thabit Al-Dhirhani",notes:"Psychologist at Neuro-Psychiatric Teaching Hospital, Aden. PSS training and field work with displaced persons."},
-  {country:"Yemen",title:"Deputy Director, National Mental Health Program (MoH)",name:"Zainab Abdullah Abdulkarim Al-Nah",notes:"Coordinates national MHPSS efforts. ToT certified trainer. Official MoH representative for psychosocial support."},
-  {country:"Yemen",title:"Women's Shelter Manager, Yemen Women Union",name:"Ms Fairoz Mohammed",notes:"Manages MHPSS services for vulnerable women and children (4,800 annual beneficiaries)."},
-  {country:"Rwanda",title:"Chairperson, Rwanda Down Syndrome Organisation",name:"Ms Edwige Musabe",notes:"Partnered with UNDP on disability inclusion and assistive tools for children with Down syndrome."},
-  {country:"Pakistan",title:"Chairperson - Dept of Psychology, University of Karachi",name:"Prof Dr. Anila Malik",notes:"UNDP Consultant. Developed MHPSS tools/manuals for PVE programmes."},
-  {country:"Pakistan",title:"Provincial Minister of Social Welfare, KP",name:"Sayed Qasim Ali Shah",notes:"Advocated for social protection and MHPSS helpline for GBV survivors."},
-  {country:"Pakistan",title:"CEO, Sustainable Peace and Development Organization",name:"Raza Shah Khan",notes:"Works on youth, peacebuilding, and MHPSS integration in conflict zones."},
-  {country:"Pakistan",title:"Clinical Psychologist",name:"Rabia Fayyaz",notes:"Promotes mental health for trauma, GBV, and disaster-affected populations."},
-  {country:"Pakistan",title:"Mental Health Consultant / Human Rights Advocate",name:"Paiman Malik",notes:"Specializes in trauma care, crisis intervention, and youth/women empowerment."},
-  {country:"Pakistan",title:"Director Program, SPADO",name:"Shahzada Naif",notes:"Leads MHPSS programs for youth, minorities, and Afghan women in conflict settings."},
-  {country:"Pakistan",title:"PhD Psychologist / MHPSS Consultant",name:"Shakir Ullah",notes:"Provides MHPSS to ex-fighters and communities in conflict-affected areas."},
-  {country:"Ukraine",title:"First Lady",name:"Ms. Olena Zelenska",notes:"Leads All-Ukrainian Mental Health Program 'How Are You?' for national mental health and destigmatization."},
-  {country:"Ukraine",title:"Minister of Social Policy",name:"Ms. Oksana Zholnovych",notes:"Leads development of Resilience Centres as part of 'How Are You?' initiative."},
-  {country:"Ukraine",title:"Head, Coordination Center for Mental Health",name:"Ms. Oksana Zbitneva",notes:"Oversees coordination of Ukraine's national MHPSS strategy."},
-  {country:"Ukraine",title:"Director of Project Development, Coordination Center",name:"Ms. Iryna Mykychak",notes:"UNDP technical counterpart for MHPSS coordination."},
-  {country:"Ukraine",title:"Director, Lisova Polyana Rehabilitation Center",name:"Ms. Ksenia Voznytsyna",notes:"Leads Ukraine's first trauma-focused rehab center. Promotes 360-degree rehabilitation."},
-  {country:"Ecuador",title:"Former Minister of Sports; Founder of Catapulta",name:"Catalina Ontaneda Vivar",notes:"Led entrepreneurship and safety programs. Consulting on MHPSS-related cultural development."},
-  {country:"Bangladesh",title:"Director General, Dept of ICT",name:"Md. Abu Sayed",notes:"Provided leadership and strategic direction to UNDP's MHPSS pilot initiative."},
-  {country:"Uganda/Zambia",title:"Founder, StrongMinds",name:"Sean Mayberry",notes:"Scaled low-cost group therapy model for women in Africa."},
-  {country:"Nigeria",title:"Founder, Mentally Aware Nigeria Initiative (MANI)",name:"Victor Ugo",notes:"Youth-led mental health awareness and advocacy in West Africa."}
-];
-
-// Populate country filter
-const countries = [...new Set(contacts.map(c => c.country))].sort();
-const countrySelect = document.getElementById('countryFilter');
-countries.forEach(c => {
-  const opt = document.createElement('option');
-  opt.value = c; opt.textContent = c;
-  countrySelect.appendChild(opt);
-});
-
-function filterContacts() {
-  const country = document.getElementById('countryFilter').value;
-  const search = document.getElementById('contactSearch').value.toLowerCase();
-  const tbody = document.getElementById('contactBody');
-  tbody.innerHTML = '';
-  let count = 0;
-  contacts.forEach(c => {
-    if (country !== 'all' && c.country !== country) return;
-    if (search && !(c.country+c.title+c.name+c.notes).toLowerCase().includes(search)) return;
-    count++;
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td><strong>${c.country}</strong></td><td>${c.title}</td><td>${c.name}</td><td style="font-size:0.82em;color:#666">${c.notes}</td>`;
-    tbody.appendChild(tr);
-  });
-  document.getElementById('contactCount').textContent = count + ' contacts';
-  checkEmpty('contactBody', count, 'contacts');
-}
-filterContacts();
-
 // ===== COUNTRY INTERVENTIONS =====
 const interventions = [
   {country:"Turkiye",types:["crisis"],year:"2023",delivery:"undp-led",desc:"Post-earthquake trauma-awareness webinars and group therapy"},
@@ -3111,20 +3028,6 @@ Key Stats:
   navigator.clipboard.writeText(text);
   btn.textContent = 'Copied!'; btn.classList.add('copied');
   setTimeout(() => { btn.textContent = 'Copy ROI Data as Text'; btn.classList.remove('copied'); }, 2000);
-}
-
-function copyContacts(btn) {
-  const country = document.getElementById('countryFilter').value;
-  const search = document.getElementById('contactSearch').value.toLowerCase();
-  let text = 'UNDP MHPSS Contact Network\n\n';
-  contacts.forEach(c => {
-    if (country !== 'all' && c.country !== country) return;
-    if (search && !(c.country+c.title+c.name+c.notes).toLowerCase().includes(search)) return;
-    text += `${c.country} | ${c.title} | ${c.name}\n  ${c.notes}\n\n`;
-  });
-  navigator.clipboard.writeText(text);
-  btn.textContent = 'Copied!'; btn.classList.add('copied');
-  setTimeout(() => { btn.textContent = 'Copy Filtered Contacts'; btn.classList.remove('copied'); }, 2000);
 }
 
 // ===== MHPSS IN ACTION CASE STUDIES =====
@@ -4946,7 +4849,7 @@ var tabMap = {
   dashboard: 'Evidence & ROI',
   proposal: 'Proposal Builder',
   showcase: 'MHPSS in Action',
-  contacts: 'Country & Contacts',
+  contacts: 'Country Programmes',
   brain: 'Brain Economy',
   trainings: 'Trainings',
   stories: 'Stories & Media',
@@ -5050,11 +4953,6 @@ function clearCaseFilters() {
   document.getElementById('casePeriod').value = 'all';
   document.getElementById('caseSearch').value = '';
   filterCases();
-}
-function clearContactFilters() {
-  document.getElementById('countryFilter').value = 'all';
-  document.getElementById('contactSearch').value = '';
-  filterContacts();
 }
 function clearTrainingFilters() {
   document.getElementById('trainingType').value = 'all';
